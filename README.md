@@ -5,7 +5,7 @@ We are implementing the following algorithms step by step through GitHub collabo
 
 First Come First Serve (FCFS) – Implemented in C.
 
-Shortest Job First (SJF) – To be implemented next.
+Shortest Job First (SJF) – Implemented in C.
 
 Round Robin (RR) – To be implemented last.
 
