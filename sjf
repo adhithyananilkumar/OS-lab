@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+struct Process {
+    char id[5];
+    int at, bt, wt, tat, ct, done;
+};
+
+int main() {
+    int n, time = 0, completed = 0;
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    struct Process p[n];
+    for (int i = 0; i < n; i++) {
+        printf("Enter ProcessID, Arrival Time, Burst Time: ");
+        scanf("%s %d %d", p[i].id, &p[i].at, &p[i].bt);
+        p[i].done = 0;
+    }
+
+    float total_wt = 0, total_tat = 0;
+
+    while (completed < n) {
+        int idx = -1;
+        int min_bt = 1e9;
+        for (int i = 0; i < n; i++) {
+            if (p[i].at <= time && !p[i].done && p[i].bt < min_bt) {
+                min_bt = p[i].bt;
+                idx = i;
+            }
+        }
+        if (idx == -1) {
+            time++;
+            continue;
+        }
+        time += p[idx].bt;
+        p[idx].ct = time;
+        p[idx].tat = p[idx].ct - p[idx].at;
+        p[idx].wt = p[idx].tat - p[idx].bt;
+        p[idx].done = 1;
+        total_wt += p[idx].wt;
+        total_tat += p[idx].tat;
+        completed++;
+    }
+
+    printf("\nSJF Scheduling:\n");
+    printf("PID\tAT\tBT\tCT\tTAT\tWT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%s\t%d\t%d\t%d\t%d\t%d\n",
+               p[i].id, p[i].at, p[i].bt, p[i].ct, p[i].tat, p[i].wt);
+    }
+    printf("Average Waiting Time = %.2f\n", total_wt / n);
+    printf("Average Turnaround Time = %.2f\n", total_tat / n);
+    return 0;
+}
